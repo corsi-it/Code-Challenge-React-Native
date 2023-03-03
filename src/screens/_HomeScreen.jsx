@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import { useNavigation } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -10,17 +10,17 @@ import {
   Alert,
   TextInput,
   ActivityIndicator,
-} from 'react-native';
+} from "react-native";
 
-import RootStackParamList from '../types/RootStackParamList';
+import RootStackParamList from "../types/RootStackParamList";
 
-const HomeScreen = ({userId}) => {
+export const HomeScreen = ({ userId }) => {
   const [todos, setTodos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isAddingTodo, setIsAddingTodo] = useState(false);
-  const [newTodoTitle, setNewTodoTitle] = useState('');
+  const [newTodoTitle, setNewTodoTitle] = useState("");
   const [isUpdatingTodo, setIsUpdatingTodo] = useState(false);
   const [todoToUpdate, setTodoToUpdate] = useState(null);
 
@@ -52,10 +52,10 @@ const HomeScreen = ({userId}) => {
   const handleAddTodo = async () => {
     setIsAddingTodo(true);
     try {
-      const response = await fetch('https://dummyjson.com/todos/add', {
-        method: 'POST',
+      const response = await fetch("https://dummyjson.com/todos/add", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: newTodoTitle,
@@ -63,7 +63,7 @@ const HomeScreen = ({userId}) => {
       });
       const data = await response.json();
       setTodos([data, ...todos]);
-      setNewTodoTitle('');
+      setNewTodoTitle("");
     } catch (error) {
       console.error(error);
     }
@@ -74,9 +74,9 @@ const HomeScreen = ({userId}) => {
     setIsUpdatingTodo(true);
     try {
       const response = await fetch(`https://dummyjson.com/todos/${id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           completed,
@@ -100,28 +100,32 @@ const HomeScreen = ({userId}) => {
   const handleDeleteTodo = async (id) => {
     try {
       const response = await fetch(`https://dummyjson.com/todos/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
       if (response.status === 200) {
         const remainingTodos = todos.filter((todo) => todo.id !== id);
         setTodos(remainingTodos);
       } else {
-        Alert.alert('Failed to delete todo');
+        Alert.alert("Failed to delete todo");
       }
     } catch (error) {
       console.error(error);
-      Alert.alert('Failed to delete todo');
+      Alert.alert("Failed to delete todo");
     }
   };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.todoContainer}
-      onPress={() => navigation.navigate(RootStackParamList.Details, { todo: item })}
+      onPress={() =>
+        navigation.navigate(RootStackParamList.Details, { todo: item })
+      }
     >
       <Text style={styles.todoTitle}>{item.title}</Text>
       <View style={styles.todoStatusContainer}>
-        <Text style={styles.todoStatusLabel}>{item.completed ? 'Completed' : 'Pending'}</Text>
+        <Text style={styles.todoStatusLabel}>
+          {item.completed ? "Completed" : "Pending"}
+        </Text>
         <CheckBox
           value={item.completed}
           onValueChange={(newValue) => handleUpdateTodo(item.id, newValue)}
@@ -132,7 +136,7 @@ const HomeScreen = ({userId}) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View>
       {isLoading ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color="#007aff" />
@@ -148,7 +152,10 @@ const HomeScreen = ({userId}) => {
           />
           <TouchableOpacity
             style={styles.addButton}
-            onPress={handleAddTodo}
+            onPress={() => {
+              navigation.navigate("Details");
+              handleAddTodo;
+            }}
           >
             <Text style={styles.addButtonText}>New Todo</Text>
           </TouchableOpacity>
@@ -156,32 +163,32 @@ const HomeScreen = ({userId}) => {
       )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
     padding: 16,
   },
   todoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#f5f5f5',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#f5f5f5",
     padding: 16,
     borderRadius: 8,
     marginBottom: 16,
   },
   todoTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   todoStatusContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   todoStatusLabel: {
     marginRight: 8,
@@ -192,19 +199,19 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   addButton: {
-    backgroundColor: '#007aff',
+    backgroundColor: "#007aff",
     padding: 16,
     borderRadius: 8,
   },
   addButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
   loaderContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
