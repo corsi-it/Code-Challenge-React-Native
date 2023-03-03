@@ -1,0 +1,19 @@
+name: run_tests
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    types: [opened, reopened, edited]
+    branches:
+      - "main"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: npm i
+    - name: Run tests
+      run: npm run test
