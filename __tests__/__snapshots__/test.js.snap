@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`renders data list 1`] = `null`;
-
-exports[`renders home screen 1`] = `null`;
-
-exports[`renders loader when fetching data 1`] = `null`;
