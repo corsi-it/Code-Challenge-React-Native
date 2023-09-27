@@ -1,13 +1,16 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { StyleSheet, Text, View, Button } from 'react-native'
+import DetailedTodo from '../components/DetailedTodo'
 
-const DetailsScreen = ({ route, navigation }) => {
+const DetailsScreen = ({ route }) => {
+  const { item } = route.params
+
   return (
     <View style={styles.container}>
-      <Text>TODO Details</Text>
+      <DetailedTodo item={item} />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -18,4 +21,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default DetailsScreen;
+export default DetailsScreen
